@@ -13,15 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.lucene.morphology.russian;
 
-import org.apache.lucene.morphology.LuceneMorphology;
+package org.apache.lucene.morphology;
 
 import java.io.IOException;
+import org.apache.lucene.analysis.TokenFilter;
+import org.apache.lucene.analysis.TokenStream;
 
-public class RussianLuceneMorphology extends LuceneMorphology {
+public final class NoOpTokenFilter extends TokenFilter {
+    public NoOpTokenFilter(TokenStream input) {
+        super(input);
+    }
 
-    public RussianLuceneMorphology() throws IOException {
-        super(RussianLuceneMorphology.class.getResourceAsStream("/org/apache/lucene/morphology/russian/morph.info"), new RussianLetterDecoderEncoder());
+    @Override
+    public boolean incrementToken() throws IOException {
+        return this.input.incrementToken();
     }
 }

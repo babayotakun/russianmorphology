@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Alexander Kuznetsov
+ * Copyright 2020 Dmitry Kalach
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.miscellaneous.SetKeywordMarkerFilter;
-import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
@@ -149,7 +148,7 @@ public class AnalyzersTest extends BaseTokenStreamTestCase {
         @Override
         protected TokenStreamComponents createComponents(String s) {
             StandardTokenizer src = new StandardTokenizer();
-            TokenFilter filter = new StandardFilter(src);
+            TokenFilter filter = new NoOpTokenFilter(src);
             CharArraySet dontStem = new CharArraySet(1, false);
             dontStem.add("Tests");
             filter = new SetKeywordMarkerFilter(filter, dontStem);

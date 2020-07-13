@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Alexander Kuznetsov 
+ * Copyright 2020 Dmitry Kalach
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.apache.lucene.analysis.payloads.PayloadHelper;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.morphology.LetterDecoderEncoder;
 import org.apache.lucene.morphology.LuceneMorphology;
+import org.apache.lucene.morphology.NoOpTokenFilter;
 import org.apache.lucene.util.BytesRef;
 
 public class MorphologyAnalyzer extends Analyzer {
@@ -68,23 +69,11 @@ public class MorphologyAnalyzer extends Analyzer {
                 return new BytesRef(bytes, 0, bytes.length);
             }
         };
-        TokenFilter filter = new NoOpFilter(src);
+        TokenFilter filter = new NoOpTokenFilter(src);
         filter = new LowerCaseFilter(filter);
         filter = new MorphologyFilter(filter, luceneMorph);
 
         return new TokenStreamComponents(src, filter);
-    }
-
-    private static class NoOpFilter extends TokenFilter {
-
-        protected NoOpFilter(TokenStream input) {
-            super(input);
-        }
-
-        @Override
-        public boolean incrementToken() throws IOException {
-            return this.input.incrementToken();
-        }
     }
 
 

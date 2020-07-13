@@ -21,10 +21,12 @@
         <junit.version>4.12</junit.version>
     </properties>
 
+
     <distributionManagement>
         <repository>
-            <id>bintray</id>
-            <url>https://api.bintray.com/maven/akuznetsov/russianmorphology/morphology</url>
+            <id>bintray-babayotakun-russianmorphology</id>
+            <name>babayotakun-russianmorphology</name>
+            <url>https://api.bintray.com/maven/babayotakun/russianmorphology/morphology/;publish=1</url>
         </repository>
     </distributionManagement>
 
@@ -142,35 +144,27 @@
     </build>
     <profiles>
         <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>3.0.1</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.10.4</version>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
+            <repositories>
+                <repository>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <id>bintray-babayotakun-russianmorphology</id>
+                    <name>bintray</name>
+                    <url>https://dl.bintray.com/babayotakun/russianmorphology</url>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <id>bintray-babayotakun-russianmorphology</id>
+                    <name>bintray-plugins</name>
+                    <url>https://dl.bintray.com/babayotakun/russianmorphology</url>
+                </pluginRepository>
+            </pluginRepositories>
+            <id>bintray</id>
         </profile>
     </profiles>
     <modules>
