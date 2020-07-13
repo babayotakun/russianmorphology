@@ -16,20 +16,18 @@
 
 package org.apache.lucene.morphology.analyzer;
 
+import java.io.IOException;
+import java.io.InputStream;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.TokenFilter;
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.payloads.PayloadEncoder;
 import org.apache.lucene.analysis.payloads.PayloadHelper;
-import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.morphology.LetterDecoderEncoder;
 import org.apache.lucene.morphology.LuceneMorphology;
 import org.apache.lucene.util.BytesRef;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
 
 public class MorphologyAnalyzer extends Analyzer {
     private LuceneMorphology luceneMorph;
@@ -70,16 +68,23 @@ public class MorphologyAnalyzer extends Analyzer {
                 return new BytesRef(bytes, 0, bytes.length);
             }
         };
-        TokenFilter filter = new StandardFilter(src);
+        TokenFilter filter = new NoOpFilter(src);
         filter = new LowerCaseFilter(filter);
         filter = new MorphologyFilter(filter, luceneMorph);
 
-        return new TokenStreamComponents(src, filter) {
-            @Override
-            protected void setReader(final Reader reader) {
-                super.setReader(reader);
-            }
-        };
+        return new TokenStreamComponents(src, filter);
+    }
+
+    private static class NoOpFilter extends TokenFilter {
+
+        protected NoOpFilter(TokenStream input) {
+            super(input);
+        }
+
+        @Override
+        public boolean incrementToken() throws IOException {
+            return this.input.incrementToken();
+        }
     }
 
 
